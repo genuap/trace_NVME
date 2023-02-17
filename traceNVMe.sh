@@ -12,14 +12,14 @@ reset=$(tput sgr0)
 function usage()
 {
 	echo "Usage: traceNVMe.sh [OPTIONS]"
-	echo "Examples: traceNVMe.sh --filename=/dev/nvme0n1 --samplerate=5 --time=1"
+	echo "Examples: traceNVMe.sh --device=/dev/nvme0n1 --samplerate=5 --time=1 --output=out.txt"
 	echo "  -h,   --help                 print help"
 	echo
 	echo " Arguments"
 	echo "  -sr,  --samplerate          	sampling rate (seconds per min)"
 	echo "  -th,  --time            	time in hours to sample"
       	echo "  -d,   --device			device to trace"	
-	echo "  -f,   --filename		output file name"
+	echo "  -o,   --output			output file name"
 	echo
 
 }
@@ -38,7 +38,7 @@ case $PARAM in
 			usage
 			exit
 			;;
-		-f | --filename)
+		-o | --output)
 			trace_filename=$VALUE
 			NUMPARAMETERS=$((NUMPARAMETERS+1))
 			;;
@@ -77,6 +77,7 @@ echo "  sampling rate (sec/min): \"${trace_rate}\""
 echo "  sampling time (hours)  : \"${trace_time}\""
 echo "	output: \"$trace_filename\""
 #estimated time = seconds per min * 60 min per hr * hrs * 3MB per sec
+echo "Estimated Trace Time: $((trace_rate*trace_time)) Minutes"
 echo "Estimated Log Size: $((trace_rate*60*trace_time*3)) MB"
 echo ""
 read -p "${green}Do you want to continue Y/N? ${reset}" -n 1 -r
